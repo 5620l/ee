@@ -1,26 +1,4 @@
 #!/bin/bash
-# =====================================================================================================
-# Copyright (C) steady.sh v1.2 2016 @LuaError (@@LuaError1)
-# =====================================================================================================
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-# this program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# =======================================================================================================
-# It depends on Tmux https://github.com/tmux/tmux which is BSD-licensed
-# and Screen https://www.gnu.org/software/screen GNU-licensed.
-# =======================================================================================================
-# This script is intended to control the state of a telegram-cli telegram bot running in background.
-# The idea is to get the bot fully operative all the time without any supervision by the user.
-# It should be able to recover the telegram bot in any case telegram-cli crashes, freezes or whatever.
-# This script works by tracing ctxt swithes value in kernel procces at a $RELOADTIME 
-# So it can detect any kind of kernel interruption with the procces and reload the bot.
-#
-
 
 # Some script variables
 OK=0
@@ -30,15 +8,14 @@ NONVOLUNTARYCHECK=0
 VOLUNTARY=1
 VOLUNTARYCHECK=0
 I=1
-BOT=Tabchi  # You can put here other bots. Also you can change it to run more than one bot in the same server.
-RELOADTIME=10  # Time between checking cpu calls of the cli process. Set the value high if your bot does not receive lots of messages.
-
+BOT=ee
+RELOADTIME=10
 
 function tmux_mode {
 
 sleep 0.5
 clear
-# Space invaders thanks to github.com/windelicato
+# Space invaders thanks to Amir
 f=3 b=4
 for j in f b; do
   for i in {0..7}; do
@@ -50,20 +27,15 @@ rst=$'\e[0m'
 
 cat << EOF
 
- $f1  ▀▄   ▄▀     $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4  ▀▄   ▄▀     $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
- $f1 ▄█▀███▀█▄    $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4 ▄█▀███▀█▄    $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
- $f1█▀███████▀█   $f2▀▀███▀▀███▀▀   $f3▀█▀██▀█▀   $f4█▀███████▀█   $f5▀▀███▀▀███▀▀   $f6▀█▀██▀█▀$rst
- $f1▀ ▀▄▄ ▄▄▀ ▀   $f2 ▀█▄ ▀▀ ▄█▀    $f3▀▄    ▄▀   $f4▀ ▀▄▄ ▄▄▀ ▀   $f5 ▀█▄ ▀▀ ▄█▀    $f6▀▄    ▄▀$rst
- 
+ $f1  @Black_CH     $f2 @Black_CH     $f3  @Black_CH   $f4  @Black_CH    $f5 @Black_CH    $f6 @Black_CH  $rst
+
 EOF
-echo -e "                \e[100m                Steady script           \e[00;37;40m"
-echo -e "               \e[01;34m                    by @LuaError                \e[00;37;40m"
+echo -e "                \e[100m                BlackPlus script           \e[00;37;40m"
+echo -e "               \e[01;34m                 By MehdiHS                \e[00;37;40m"
 echo ""
 cat << EOF
- $bld$f1▄ ▀▄   ▄▀ ▄   $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4▄ ▀▄   ▄▀ ▄   $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
- $bld$f1█▄█▀███▀█▄█   $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4█▄█▀███▀█▄█   $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
- $bld$f1▀█████████▀   $f2▀▀▀██▀▀██▀▀▀   $f3▀▀█▀▀█▀▀   $f4▀█████████▀   $f5▀▀▀██▀▀██▀▀▀   $f6▀▀█▀▀█▀▀$rst
- $bld$f1 ▄▀     ▀▄    $f2▄▄▀▀ ▀▀ ▀▀▄▄   $f3▄▀▄▀▀▄▀▄   $f4 ▄▀     ▀▄    $f5▄▄▀▀ ▀▀ ▀▀▄▄   $f6▄▀▄▀▀▄▀▄$rst
+ $bld$f1 @Black_CH   $f2 @Black_CH    $f3  @Black_CH    $f4 @Black_CH   $f5 @Black_CH    $f6  @Black_CH  $rst
+
 
 EOF
 
@@ -72,7 +44,7 @@ sleep 1.2
 # Checking if the bot folder is in HOME
 echo -e "$bld$f4 CHECKING INSTALLED BOT...$rst"
 sleep 0.5
-ls ../ | grep $BOT 2>/dev/null >/dev/null
+ls ../ | grep $BOT 2>/dev/null
 if [ $? != 0 ]; then
   echo -e "$f1 ERROR: BOT: $BOT NOT FOUND IN YOUR HOME DIRECTORY$rst"
   sleep 4
@@ -81,6 +53,13 @@ fi
 echo -e "$f2 $BOT FOUND IN YOUR HOME DIRECTORY$rst"
 sleep 0.5
 
+
+echo ""
+echo -e "\033[38;5;208m     > Channel : @Black_CH                         \033[0;00m"
+echo -e "\033[38;5;208m     > Developer : @MehdiHS                        \033[0;00m"
+echo -e "\033[38;5;208m     > Bot ID : @BlackPlus                         \033[0;00m"
+echo -e "\033[38;5;208m     > Github : GitHub.com/Mehdi-HS/BlackPlus      \033[0;00m"
+echo -e "\033[38;5;208m                                                   \033[0;00m"
 
 sleep 1.5
 echo -e "$bld$f4 CHECKING PROCESSES...$rst"
@@ -168,12 +147,6 @@ while true; do
 
 	fi
 	
-	# Clear cache after 10h
-	if [ "$OK" == 2400 ]; then
-		sync
-		sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'
-	fi
-	
 	VOLUNTARY=`echo $VOLUNTARYCHECK`
 	NONVOLUNTARY=`echo $NONVOLUNTARYCHECK`
 	sleep $RELOADTIME
@@ -189,7 +162,7 @@ function screen_mode {
 clear
 sleep 0.5
 
-# Space invaders thanks to github.com/windelicato
+# Space invaders thanks to github.com/mehdi-hs
 f=3 b=4
 for j in f b; do
   for i in {0..7}; do
@@ -201,20 +174,14 @@ rst=$'\e[0m'
 
 cat << EOF
 
- $f1  ▀▄   ▄▀     $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4  ▀▄   ▄▀     $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
- $f1 ▄█▀███▀█▄    $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4 ▄█▀███▀█▄    $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
- $f1█▀███████▀█   $f2▀▀███▀▀███▀▀   $f3▀█▀██▀█▀   $f4█▀███████▀█   $f5▀▀███▀▀███▀▀   $f6▀█▀██▀█▀$rst
- $f1▀ ▀▄▄ ▄▄▀ ▀   $f2 ▀█▄ ▀▀ ▄█▀    $f3▀▄    ▄▀   $f4▀ ▀▄▄ ▄▄▀ ▀   $f5 ▀█▄ ▀▀ ▄█▀    $f6▀▄    ▄▀$rst
+ $f1  @Black_CH     $f2 @Black_CH     $f3  @Black_CH   $f4  @Black_CH    $f5 @Black_CH    $f6 @Black_CH  $rst
  
 EOF
-echo -e "                \e[100m                Steady script           \e[00;37;40m"
-echo -e "               \e[01;34m                    by @LuaError                \e[00;37;40m"
+echo -e "                \e[100m                BlackPlus script           \e[00;37;40m"
+echo -e "               \e[01;34m                    by MehdiHS               \e[00;37;40m"
 echo ""
 cat << EOF
- $bld$f1▄ ▀▄   ▄▀ ▄   $f2 ▄▄▄████▄▄▄    $f3  ▄██▄     $f4▄ ▀▄   ▄▀ ▄   $f5 ▄▄▄████▄▄▄    $f6  ▄██▄  $rst
- $bld$f1█▄█▀███▀█▄█   $f2███▀▀██▀▀███   $f3▄█▀██▀█▄   $f4█▄█▀███▀█▄█   $f5███▀▀██▀▀███   $f6▄█▀██▀█▄$rst
- $bld$f1▀█████████▀   $f2▀▀▀██▀▀██▀▀▀   $f3▀▀█▀▀█▀▀   $f4▀█████████▀   $f5▀▀▀██▀▀██▀▀▀   $f6▀▀█▀▀█▀▀$rst
- $bld$f1 ▄▀     ▀▄    $f2▄▄▀▀ ▀▀ ▀▀▄▄   $f3▄▀▄▀▀▄▀▄   $f4 ▄▀     ▀▄    $f5▄▄▀▀ ▀▀ ▀▀▄▄   $f6▄▀▄▀▀▄▀▄$rst
+ $bld$f1 @Black_CH   $f2 @Black_CH    $f3  @Black_CH    $f4 @Black_CH   $f5 @Black_CH    $f6  @Black_CH  $rst
 
 EOF
 
@@ -223,7 +190,7 @@ sleep 1.3
 # Checking if the bot folder is in HOME
 echo -e "$bld$f4 CHECKING INSTALLED BOT...$rst"
 sleep 0.5
-ls ../ | grep $BOT 2>/dev/null >/dev/null
+ls ../ | grep $BOT 2>/dev/null
 if [ $? != 0 ]; then
   echo -e "$f1 ERROR: BOT: $BOT NOT FOUND IN YOUR HOME DIRECTORY$rst"
   sleep 4
@@ -233,6 +200,12 @@ echo -e "$f2 $BOT FOUND IN YOUR HOME DIRECTORY$rst"
 sleep 0.5
 
 
+echo ""
+echo -e "\033[38;5;208m     > Channel : @Black_CH                         \033[0;00m"
+echo -e "\033[38;5;208m     > Developer : @MehdiHS                        \033[0;00m"
+echo -e "\033[38;5;208m     > Bot ID : @BlackPlus                         \033[0;00m"
+echo -e "\033[38;5;208m     > Github : GitHub.com/Mehdi-HS/BlackPlus      \033[0;00m"
+echo -e "\033[38;5;208m                                                   \033[0;00m"
 
 # Starting preliminar setup
 sleep 1.5
@@ -411,12 +384,6 @@ sleep 5
 		
 	fi
 	
-	# Clear cache after 10h
-	if [ "$OK" == 2400 ]; then
-		sync
-		sudo sh -c 'echo 3 > /proc/sys/vm/drop_caches'
-	fi
-	
 	VOLUNTARY=`echo $VOLUNTARYCHECK`
 	NONVOLUNTARY=`echo $NONVOLUNTARYCHECK`
 	sleep $RELOADTIME
@@ -511,8 +478,15 @@ while getopts ":tsTSih" opt; do
 	i)
 	echo -e "\e[1m"
 	echo -e ""
-	echo "steady.sh bash script v1.2 @LuaError 2016 iTeam" >&2
+	echo "steady.sh bash script v1.2 iicc 2016 DBTeam" >&2
 	echo ""
+	echo -e "\e[0m"
+echo -e "\033[38;5;208m     > Channel : @Black_CH                         \033[0;00m"
+echo -e "\033[38;5;208m     > Developer : @MehdiHS                        \033[0;00m"
+echo -e "\033[38;5;208m     > Bot ID : @BlackPlus                         \033[0;00m"
+echo -e "\033[38;5;208m     > Github : GitHub.com/Mehdi-HS/BlackPlus      \033[0;00m"
+echo -e "\033[38;5;208m                                                   \033[0;00m"	
+echo ""
 	exit 1
       ;;
 	h)
@@ -520,12 +494,12 @@ while getopts ":tsTSih" opt; do
 	echo -e ""
 	echo "Usage:"
 	echo -e ""
-	echo "steady.sh -t"
-	echo "steady.sh -s"
-	echo "steady.sh -T"
-	echo "steady.sh -S"
-	echo "steady.sh -h"
-	echo "steady.sh -i"
+	echo "blackplus.sh -t"
+	echo "blackplus.sh -s"
+	echo "blackplus.sh -T"
+	echo "blackplus.sh -S"
+	echo "blackplus.sh -h"
+	echo "blackplus.sh -i"
     echo ""
 	echo "Options:"
 	echo ""
